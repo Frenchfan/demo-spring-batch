@@ -1,0 +1,64 @@
+server:
+  port: 8081
+
+spring:
+  # H2 Database
+  datasource:
+    url: jdbc:h2:mem:batch-demo-v1
+    driver-class-name: org.h2.Driver
+    username: sa
+    password: password
+
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+      settings:
+        web-allow-others: false
+        trace: false
+
+  # JPA
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    show-sql: true
+    properties:
+      jakarta:
+        persistence:
+          create-database-schemas: true
+      hibernate:
+        format_sql: true
+        use_sql_comments: true
+        default_schema: TEST
+
+  # Flyway
+  flyway:
+    schemas: TEST
+    default-schema: TEST
+
+  batch:
+    job:
+      enabled: false
+    jdbc:
+      # Flyway V3 is the only owner of the Batch metadata schema.
+      initialize-schema: never
+      table-prefix: TEST.BATCH_
+
+  # Embedded MongoDB
+  mongodb:
+    host: localhost
+    port: 27027
+    database: batch_demo_v1
+
+de:
+  flapdoodle:
+    mongodb:
+      embedded:
+        version: "7.0.28"
+
+logging:
+  level:
+    org.springframework.web: DEBUG
+    org.hibernate.SQL: DEBUG
+    org.springframework.boot.web: DEBUG
+    org.mongodb.driver: INFO
